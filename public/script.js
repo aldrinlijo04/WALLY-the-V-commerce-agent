@@ -4,7 +4,7 @@ const flash = document.getElementById('flash');
 const clickSound = document.getElementById('clickSound');
 
 canvas.width = window.innerWidth;
-canvas.height = 200; // Adjusted height for better visualization
+canvas.height = 200; // Set the height of the canvas to 200 pixels
 
 let isRecording = false;
 let audioContext;

@@ -4,7 +4,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; // center the content vertically
     height: 100vh;
     background-color: black;
     color: white;
