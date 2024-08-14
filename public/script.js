@@ -12,17 +12,32 @@ let analyser;
 let microphone;
 let dataArray;
 let animationId;
+// Existing code...
+let mediaRecorder;
+let audioChunks = [];
 
 const startRecording = async () => {
     try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioContext.createAnalyser();
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        microphone = audioContext.createMediaStreamSource(stream);
-        microphone.connect(analyser);
-        analyser.fftSize = 2048;
-        const bufferLength = analyser.frequencyBinCount;
-        dataArray = new Uint8Array(bufferLength);
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.start();
+        mediaRecorder.ondataavailable = (e) => {
+            audioChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            audioChunks = [];
+
+            const formData = new FormData();
+            formData.append('audio', audioBlob, 'recorded_audio.wav');
+
+            await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+        };
 
         clickSound.play();
         flash.style.opacity = 1;
@@ -38,12 +53,17 @@ const startRecording = async () => {
 };
 
 const stopRecording = () => {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+    }
     isRecording = false;
     cancelAnimationFrame(animationId);
     if (audioContext) {
         audioContext.close();
     }
 };
+
+
 
 const visualizeFrequency = () => {
     analyser.getByteFrequencyData(dataArray);
