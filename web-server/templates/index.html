@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Recorder</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+                flex-direction: column; /* This ensures that the body content is arranged vertically */
+
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+            flex-direction: row;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        #left-side {
+            width: 60%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: #444;
+            border-radius: 8px;
+            padding: 15px;
+            width: calc(50% - 10px);
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .product-card img {
+            width: auto;
+            height: 100px;
+            border-radius: 5px;
+        }
+
+        #right-side {
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #bubble {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        #microphone-button {
+            background-color: #666;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #microphone-button i {
+            pointer-events: none;
+        }
+
+        #result-text {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="#" onclick="showTab(1)">Voice Recorder</a>
+        <a href="#" onclick="showTab(2)">Tab 2</a>
+        <a href="#" onclick="showTab(3)">Tab 3</a>
+        <a href="#" onclick="showTab(4)">Tab 4</a>
+    </div>
+    
+    <div class="container">
+        <div class="container">
+            <div id="tab-1" class="tab-content active">
+                <div id="bubble"></div>
+                <button id="microphone-button"><i class="fa fa-microphone"></i></button>
+                <p id="result-text"></p> <!-- Placeholder for the result text -->
+            </div>
+            <!-- Other tab content remains the same -->
+        </div>
+        
+       <div id="tab-2" class="tab-content ">
+        <div id="left-side">
+            <div class="product-card">
+                <img src="/static/images/product1.png" alt="Product 1">
+                <h2>Product 1</h2>
+                <p>Description of Product 1</p>
+            </div>
+            <div class="product-card">
+                <img src="/static/images/product2.png" alt="Product 2">
+                <h2>Product 2</h2>
+                <p>Description of Product 2</p>
+            </div>
+            <div class="product-card">
+                <img src="/static/images/product3.png" alt="Product 3">
+                <h2>Product 3</h2>
+                <p>Description of Product 3</p>
+            </div>
+            <div class="product-card">
+                <img src="/static/images/product4.png" alt="Product 4">
+                <h2>Product 4</h2>
+                <p>Description of Product 4</p>
+            </div>
+        </div>
+        
+        <div id="right-side">
+            <div id="bubble"></div>
+            <button id="microphone-button"><i class="fa fa-microphone"></i></button>
+            <p id="result-text"></p>
+        </div>
+    </div>
+        <div id="tab-3" class="tab-content">
+            <h1>Tab 3 Content</h1>
+            <p>Content for the third tab goes here.</p>
+        </div>
+        <div id="tab-4" class="tab-content">
+            <h1>Tab 4 Content</h1>
+            <p>Content for the fourth tab goes here.</p>
+        </div>
+    </div>
+    
+    <script>
+        let recording = false;
+        let recorder;
+
+        document.getElementById('microphone-button').addEventListener('click', function () {
+            if (recording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                recording = true;
+                recorder = new MediaRecorder(stream);
+                recorder.start();
+
+                const audioChunks = [];
+                recorder.addEventListener("dataavailable", event => {
+                    audioChunks.push(event.data);
+                });
+
+                recorder.addEventListener("stop", () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const formData = new FormData();
+                    formData.append('file', audioBlob, 'record.wav');
+
+                    fetch('http://localhost:5000/upload', { 
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultText = data.result;
+                        console.log(resultText)
+                        document.getElementById('result-text').textContent = resultText;
+                        setTimeout(()=>{
+                            switchToTab2AndCallFunction();
+                        },2000);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+
+                recorder.start();
+
+                const bubble = document.getElementById('bubble');
+                const analyser = new (window.AudioContext || window.webkitAudioContext)().createAnalyser();
+                const source = new (window.AudioContext || window.webkitAudioContext)().createMediaStreamSource(stream);
+                source.connect(analyser);
+                analyser.fftSize = 256;
+
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                function animateBubble() {
+                    if (!recording) return;
+                    analyser.getByteFrequencyData(dataArray);
+                    const volume = dataArray.reduce((a, b) => a + b) / dataArray.length;
+                    const scale = Math.max(1, volume / 256 * 3);
+                    bubble.style.transform = `scale(${scale})`;
+                    requestAnimationFrame(animateBubble);
+                }
+
+                animateBubble();
+            }).catch(err => {
+                console.log('The following error occurred: ' + err);
+            });
+        }
+
+        function stopRecording() {
+            recorder.stop();
+            recording = false;
+        }
+        // Function to show a specific tab
+        function showTab(tabIndex) {
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        document.getElementById('tab-' + tabIndex).classList.add('active');
+        if (tabIndex === 2) {
+            displayProducts(); // Display products when the second tab is shown
+        }
+    }
+
+    // Example JSON data
+    const products = {
+        "products": [
+            {
+                "id": 1,
+                "name": "Washing Machine",
+                "description": "A high-efficiency front-loading washing machine.",
+                "price": 499.99,
+                "image": "images/washing-machine.png"
+            },
+            {
+                "id": 2,
+                "name": "Refrigerator",
+                "description": "A large capacity refrigerator with a freezer.",
+                "price": 899.99,
+                "image": "static/images/refrigerator.jpg"
+            }
+        ]
+    };
+
+    // Function to display products in the product container
+    function displayProducts() {
+        const container = document.getElementById('product-container');
+        container.innerHTML = ''; // Clear any previous content
+
+        products.products.forEach(product => {
+            // Create a product element
+            const productElement = document.createElement('div');
+            productElement.classList.add('product');
+
+            // Add product image
+            const img = document.createElement('img');
+            img.src = product.image; // Set image source
+            img.alt = product.name;
+            productElement.appendChild(img);
+
+            // Add product name
+            const name = document.createElement('h2');
+            name.textContent = product.name;
+            productElement.appendChild(name);
+
+            // Add product description
+            const description = document.createElement('p');
+            description.textContent = product.description;
+            productElement.appendChild(description);
+
+            // Add product price
+            const price = document.createElement('p');
+            price.textContent = `$${product.price}`;
+            productElement.appendChild(price);
+
+            // Add the product element to the container
+            container.appendChild(productElement);
+        });
+    }
+
+// Function to switch to Tab 2 and call another function
+function switchToTab2AndCallFunction() {
+    // Switch to Tab 2
+    showTab(2);
+    
+    // Call the additional function
+    anotherFunction();
+}
+
+// Example function to be called after switching tabs
+function anotherFunction() {
+    console.log("You have switched to Tab 2 and anotherFunction has been called.");
+    // Additional code to be executed after switching to Tab 2
+}
+
+// Example function to switch from Voice Recorder to Tab 2
+function switchFromVoiceRecorderToTab2() {
+    switchToTab2AndCallFunction();
+}
+
+// Attach the function to an event, for example when a button is clicked
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Washing Machine",
+            "description": "A high-efficiency front-loading washing machine.",
+            "price": 499.99,
+            "image": "static/images/washing-machine.png"
+        },
+        {
+            "id": 2,
+            "name": "Refrigerator",
+            "description": "A spacious double-door refrigerator.",
+            "price": 799.99,
+            "image": "static/images/refrigerator.png"
+        },
+        {
+            "id": 3,
+            "name": "Microwave Oven",
+            "description": "A powerful microwave oven with various cooking modes.",
+            "price": 149.99,
+            "image": "static/images/microwave-oven.png"
+        },
+        {
+            "id": 4,
+            "name": "Dishwasher",
+            "description": "An energy-efficient dishwasher with multiple settings.",
+            "price": 399.99,
+            "image": "static/images/dishwasher.png"
+        }
+    ]
+}

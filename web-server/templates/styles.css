@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    padding: 10px 0;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 14px 20px;
+    font-size: 16px;
+}
+
+.navbar a:hover {
+    background-color: #555;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#bubble, #bubble-right {
+    width: 150px;
+    height: 150px;
+    background-color: white;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    transition: transform 0.1s ease-in-out;
+}
+
+#microphone-button, #microphone-button-right {
+    background-color: #444;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#microphone-button:active, #microphone-button-right:active {
+    background-color: #666;
+}
+
+#result-text {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.left-side {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.product-card {
+    background-color: #222;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    width: 45%;
+    border-radius: 10px;
+}
+
+.product-card img {
+    width: auto;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.right-side {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
