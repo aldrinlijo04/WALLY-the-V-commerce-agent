@@ -1,0 +1,165 @@
+/* General styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation bar styling */
+.navbar {
+    background-color: #007bff;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+    background-color: #0056b3;
+}
+
+/* Page content styling */
+.page {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #007bff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+h2 i {
+    margin-right: 10px;
+}
+
+/* Input and select elements styling */
+input, select {
+    width: 80%;
+    max-width: 300px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+button {
+    width: 80%;
+    max-width: 300px;
+    padding: 12px;
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+button i {
+    margin-right: 8px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Result styling */
+p {
+    margin-top: 10px;
+    color: #555;
+    font-size: 14px;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Transaction history list styling */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+ul li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .navbar a {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    input, select, button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    ul li {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .navbar a {
+        font-size: 14px;
+        padding: 10px 12px;
+        text-align: center;
+    }
+
+    input, select, button {
+        width: 100%;
+        font-size: 14px;
+        padding: 8px;
+    }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet System</title>
+    <!-- Link to FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="#" id="create_wallet_tab" onclick="showPage('create_wallet')"><i class="fas fa-user-plus"></i> Create Wallet</a>
+        <a href="#" id="balance_tab" onclick="showPage('balance')"><i class="fas fa-money-check-alt"></i> Check Balance</a>
+        <a href="#" id="transaction_tab" onclick="showPage('transaction')"><i class="fas fa-exchange-alt"></i> Transaction</a>
+        <a href="#" id="history_tab" onclick="showPage('history')"><i class="fas fa-history"></i> Transaction History</a>
+    </div>
+
+    <!-- Create Wallet Section -->
+    <div class="page" id="create_wallet" style="display: none;">
+        <h2><i class="fas fa-user-plus"></i> Create Wallet</h2>
+        <input type="text" id="user_id" placeholder="Enter User ID" required>
+        <input type="password" id="pin" placeholder="Set PIN" required>
+        <button onclick="createWallet()"><i class="fas fa-check-circle"></i> Create Wallet</button>
+        <p id="create_wallet_result"></p>
+    </div>
+
+    <!-- Check Balance Section -->
+    <div class="page" id="balance" style="display: none;">
+        <h2><i class="fas fa-money-check-alt"></i> Check Balance</h2>
+        <input type="text" id="balance_user_id" placeholder="Enter User ID" required>
+        <button onclick="checkBalance()"><i class="fas fa-search-dollar"></i> Check Balance</button>
+        <p id="balance_result"></p>
+    </div>
+
+    <!-- Perform Transaction Section -->
+    <div class="page" id="transaction" style="display: none;">
+        <h2><i class="fas fa-exchange-alt"></i> Perform Transaction</h2>
+        <input type="text" id="transaction_user_id" placeholder="Enter User ID" required>
+        <input type="number" id="amount" placeholder="Enter Amount" required>
+        <select id="transaction_type">
+            <option value="credit">Add Money</option>
+            <option value="debit">Withdraw Money</option>
+        </select>
+        <input type="password" id="transaction_pin" placeholder="Enter PIN" required>
+        <button onclick="performTransaction()"><i class="fas fa-hand-holding-usd"></i> Perform Transaction</button>
+        <p id="transaction_result"></p>
+    </div>
+
+    <!-- View Transaction History Section -->
+    <div class="page" id="history" style="display: none;">
+        <h2><i class="fas fa-history"></i> Transaction History</h2>
+        <input type="text" id="history_user_id" placeholder="Enter User ID" required>
+        <button onclick="getTransactionHistory()"><i class="fas fa-list"></i> View History</button>
+        <ul id="history_result"></ul>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script src="script.js"></script>
+</body>
+</html>
