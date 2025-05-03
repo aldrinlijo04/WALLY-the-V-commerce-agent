@@ -12,7 +12,7 @@ pipe = pipeline(
 )
 
 # Get the latest file in the recordings directory
-recordings_dir = "recordings"
+recordings_dir = "../recordings"
 latest_file = max([os.path.join(recordings_dir, f) for f in os.listdir(recordings_dir)], key=os.path.getctime)
 
 # Transcribe the latest audio file
